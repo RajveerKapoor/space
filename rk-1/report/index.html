@@ -1,0 +1,192 @@
+<title>TIC 178994149.01</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single reading column (~70ch) with full-width figure plates; data in mono "spec sheet" tables */
+:root{
+  --bg:#f5f6f9; --surface:#ffffff; --fg:#151a24; --muted:#5b6475; --line:#dde1ea;
+  --accent:#2a55c9; --accent-soft:#e7ecfa; --pass:#1f7a4d; --warn:#9a5b00; --plate:#ffffff;
+  --display:"Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e121b; --surface:#151b27; --fg:#e4e8f1; --muted:#9aa3b5; --line:#273043;
+  --accent:#7d9cff; --accent-soft:#1c2540; --pass:#5ccf94; --warn:#f0b35a; --plate:#f4f5f8; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e121b; --surface:#151b27; --fg:#e4e8f1; --muted:#9aa3b5; --line:#273043;
+  --accent:#7d9cff; --accent-soft:#1c2540; --pass:#5ccf94; --warn:#f0b35a; --plate:#f4f5f8; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:44px}
+header{padding-top:40px;display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,54px);line-height:1.05;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:24px;margin:0 0 12px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 8px}
+p{margin:0 0 12px;max-width:68ch}
+.lede{font-size:19px;line-height:1.55;color:var(--fg);max-width:62ch}
+.ids{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stat{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat .k{font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.stat .v{font-family:var(--display);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat .s{font-family:var(--mono);font-size:12px;color:var(--muted)}
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figure img{display:block;width:100%;max-width:100%;height:auto;background:var(--plate);border:1px solid var(--line);border-radius:8px;padding:6px}
+figcaption{font-size:14px;color:var(--muted);max-width:72ch}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;background:var(--accent-soft)}
+td.num,td.mono{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.pass{color:var(--pass)} .warn{color:var(--warn)}
+.note{border-left:3px solid var(--warn);background:var(--surface);padding:14px 16px;border-radius:0 8px 8px 0}
+.note p:last-child{margin-bottom:0}
+code,.code{font-family:var(--mono);font-size:13px}
+pre{font-family:var(--mono);font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;overflow-x:auto;margin:0;line-height:1.5}
+ul{margin:0 0 12px;padding-left:20px;max-width:68ch} li{margin-bottom:6px}
+a{color:var(--accent)}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">New transiting planet candidate · TESS Sector 98</div>
+  <h1>TIC 178994149.01</h1>
+  <p class="lede">A Saturn-sized object passed in front of a nearby M dwarf on 19 November 2025. The 2.6% dip sits in public TESS data, yet the star appears in no planet, candidate, or pipeline-detection catalog.</p>
+  <div class="ids">TIC 178994149 · 2MASS J04390289−2919401 · Gaia DR3 4879180296770956416 · RA 04h39m02.91s Dec −29°19′40.2″</div>
+</header>
+
+<section class="stats" aria-label="Key numbers">
+  <div class="stat"><span class="k">Radius</span><span class="v">8.2 R⊕</span><span class="s">+0.5 / −0.4 · 0.73 R<sub>J</sub></span></div>
+  <div class="stat"><span class="k">Transit depth</span><span class="v">2.6%</span><span class="s">± 0.2% · SNR ≈ 17</span></div>
+  <div class="stat"><span class="k">Duration</span><span class="v">2.5 h</span><span class="s">T<sub>14</sub> ± 0.3 h</span></div>
+  <div class="stat"><span class="k">Period</span><span class="v">&gt; 49.6 d</span><span class="s">single transit</span></div>
+  <div class="stat"><span class="k">Host</span><span class="v">M3.5 V</span><span class="s">0.48 R☉ · 116 pc</span></div>
+  <div class="stat"><span class="k">T<sub>eq</sub></span><span class="v">≤ 245 K</span><span class="s">temperate to cold</span></div>
+</section>
+
+<section>
+  <h2>The transit</h2>
+  <figure>
+    <img src="fig_fit.png" alt="TESS 2-minute light curve of TIC 178994149 showing a 2.4 percent, 2.5 hour transit with best-fit model">
+    <figcaption>TESS 2-minute SPOC PDCSAP photometry around BTJD 3998.904 (BJD<sub>TDB</sub> 2460998.9041, 2025-11-19 09:41 UTC). Black points are 20-minute bins; the red curve is the best-fit limb-darkened transit model (batman + emcee, quadratic limb darkening for a 3300 K dwarf).</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Where it sits in the data</h2>
+  <figure>
+    <img src="fig_overview.png" alt="Three sectors of TESS 2-minute data; one transit in Sector 98 and none in Sectors 106 and 107">
+    <figcaption>All 2-minute data for the star (Sectors 98, 106, 107). The red band marks the only transit. Independent photometry from full-frame-image cutouts in Sectors 5, 32, 108 and 109 shows no second event.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Why it is not a false alarm</h2>
+  <p>Most transit-like dips in TESS data turn out to be eclipsing binaries on neighbouring stars, scattered light, or momentum-dump glitches. Of about 50 candidates inspected in detail, every other one failed at least one of these tests or could not be pinned to a single star. This one passes all of them.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Test</th><th>Result</th><th></th></tr></thead>
+    <tbody>
+      <tr><td>Catalog novelty</td><td>Absent from the TOI list (8,175), CTOI list (5,139), NASA Exoplanet Archive (6,473 planets), every SPOC TCE list for Sectors 1–108 (342,199 TCEs), and the literature</td><td><span class="pill pass">pass</span></td></tr>
+      <tr><td>Seen in raw and corrected flux</td><td>Same dip in SAP and PDCSAP; quality flags clear for the whole event</td><td><span class="pill pass">pass</span></td></tr>
+      <tr><td>Background event</td><td>Background flux change during transit is 2% of the dip (scattered-light or asteroid events give ≈100%)</td><td><span class="pill pass">pass</span></td></tr>
+      <tr><td>Centroid motion</td><td>Flux-weighted centroid shift 0.7σ, consistent with zero</td><td><span class="pill pass">pass</span></td></tr>
+      <tr><td>Pixel-level location</td><td>Difference image peaks on the target (4.7″, within systematics); only other Gaia source within 40″ is G = 20.8 at 18.6″, which would need a 600% eclipse</td><td><span class="pill pass">pass</span></td></tr>
+      <tr><td>Common-mode systematic</td><td>No other star within 7° on the sky shows an event within ±0.1 d (0 found, ≈3 expected by chance)</td><td><span class="pill pass">pass</span></td></tr>
+      <tr><td>Independent photometry</td><td>Recovered in my own FFI cutout photometry (SNR 17, depth 2.3%)</td><td><span class="pill pass">pass</span></td></tr>
+      <tr><td>Astrometric binarity</td><td>Gaia DR3 RUWE 1.12, no multi-peak flag, non_single_star = 0</td><td><span class="pill pass">pass</span></td></tr>
+      <tr><td>Contamination</td><td>TIC contamination ratio 0.0004</td><td><span class="pill pass">pass</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="two" style="margin-top:18px">
+    <figure>
+      <img src="fig_diffimage.png" alt="Out-of-transit and difference images; the flux loss is centred on the target star">
+      <figcaption>Sector 98 target pixel file. Left: median image with the pipeline aperture (orange). Right: out-of-transit minus in-transit. The missing light comes from the target (star), not the brighter neighbour 72″ away (cross).</figcaption>
+    </figure>
+    <figure>
+      <img src="fig_diagnostics.png" alt="PDCSAP, SAP, background and centroid time series around the transit">
+      <figcaption>Corrected flux, raw flux, background, and centroid around the event. The dip is in both flux products; background and centroids stay flat.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <h2>Size and orbit</h2>
+  <figure>
+    <img src="fig_post.png" alt="Posterior distributions of planet radius and impact parameter">
+    <figcaption>MCMC posteriors. Half the solutions are non-grazing and give 8.2 (+0.5 / −0.4) R⊕. The other half graze the stellar limb, where the radius is poorly bounded.</figcaption>
+  </figure>
+  <figure style="margin-top:18px">
+    <img src="fig_window.png" alt="Orbital periods allowed by TESS coverage; everything below 49.6 days is excluded">
+    <figcaption>Periods still allowed by the 7 sectors of coverage spanning 2018–2026 (one transit seen). Everything shorter than 49.6 d would have produced a second transit and is excluded; most allowed periods are longer than 100 d.</figcaption>
+  </figure>
+  <p style="margin-top:14px">A 2.5-hour transit is short for a planet on an orbit of 50 days or more around this star. A central transit on a circular 100-day orbit would last about 6 hours. Two geometries explain this. Either the orbit is eccentric (e ≳ 0.5, transit near periastron), which is common among long-period giant planets, or the transit is grazing. At periods above 50 days the object receives at most 0.6 times Earth's insolation, placing it at or beyond the outer edge of the star's habitable zone.</p>
+</section>
+
+<section>
+  <h2>The host star</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Property</th><th>Value</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Spectral type (photometric)</td><td class="mono">≈ M3.5 V</td><td>Gaia BP−RP = 2.71</td></tr>
+      <tr><td>Effective temperature</td><td class="mono">3320 ± 157 K (3439 K)</td><td>TIC v8.2 (Gaia GSP-Phot)</td></tr>
+      <tr><td>Radius / mass</td><td class="mono">0.482 ± 0.014 R☉ / 0.48 M☉</td><td>TIC v8.2</td></tr>
+      <tr><td>Distance</td><td class="mono">116.1 ± 0.3 pc</td><td>Gaia DR3 parallax 8.614 ± 0.020 mas</td></tr>
+      <tr><td>Magnitudes</td><td class="mono">T 13.58 · G 14.83 · V 16.17 · J 11.95 · K 11.07</td><td>TIC, Gaia, 2MASS</td></tr>
+      <tr><td>Radial velocity</td><td class="mono">17.5 ± 5.5 km/s</td><td>Gaia DR3</td></tr>
+      <tr><td>Proper motion</td><td class="mono">+14.3, −2.8 mas/yr</td><td>Gaia</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="note">
+  <h3>What is still open</h3>
+  <p>This is a planet candidate, not a confirmed planet. Three things stand between it and confirmation.</p>
+  <ul>
+    <li><strong>Only one transit.</strong> The period is unknown. A second transit from future TESS sectors or ground photometry would pin it down.</li>
+    <li><strong>No mass yet.</strong> A grazing low-mass star or brown dwarf can mimic a giant planet. Radial velocities would settle it: a Saturn-mass planet at 100 days induces about 20 m/s, a Jupiter about 70 m/s, both within reach of near-infrared spectrographs.</li>
+    <li><strong>The star is bright for its colour.</strong> It sits 1.1–1.4 mag above the main sequence in both G and K. That points either to youth (an inflated pre-main-sequence star) or to an unresolved companion. High-resolution imaging and a spectrum would tell them apart, and either answer changes the planet's radius.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>How it was found</h2>
+  <p>I streamed every 2-minute SPOC light curve from TESS Sectors 97–108 (153,730 light curves of 84,380 stars, the 2025–2026 data) from the MAST public archive, detrended each one, and ran a box-matched single-event search at durations from 1 to 13 hours. SPOC's single-sector search needs two transits inside one sector, and its latest multi-sector run stops at Sector 96, so long-period planets in these sectors fall through. A multi-sector box-least-squares search for 8–120 day periods over 11,496 stars with two or more recent sectors ran alongside; of 180 periodic signals it returned, 24 survived a flat-baseline shape test, and none of those turned out to be a planet-sized transit on the target star. Every candidate then went through catalog cross-matching against TOIs, CTOIs, confirmed planets and all SPOC TCE ephemerides, then the background, centroid, difference-image and systematics tests above.</p>
+  <h3>Other new signals along the way</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Star</th><th>Signal</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">TIC 220389092</td><td>4.2% eclipses, P = 25.2844 d, 5 events in Sectors 68–105. SPOC attributed them to the neighbour TIC 403191781 with wrong periods (11.97 d, 733 d).</td><td><span class="pill warn">eclipsing binary</span></td></tr>
+      <tr><td class="mono">TIC 178153666</td><td>Equal-depth (0.85%) V-shaped eclipses at phases 0 and 0.572, P = 21.383 d; no SPOC detection</td><td><span class="pill warn">eccentric grazing binary</span></td></tr>
+      <tr><td class="mono">TIC 146320922</td><td>2.5 ppt dips every 15.786 d in the light of TIC 146320921 (5 transits, S106–S108); difference images put them on this background star, where the eclipse is ≳4% deep</td><td><span class="pill warn">background binary</span></td></tr>
+      <tr><td class="mono">TIC 79531206 / 79531205</td><td>Two matching 0.2% dips 2,830 d apart in the light of TIC 79531204; difference images place them on the faint neighbour pair</td><td><span class="pill warn">off-target, unresolved</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Candidate parameters</h2>
+  <p>Values for follow-up teams and for an eventual ExoFOP listing. Since July 2025 ExoFOP accepts community candidates only after they appear in a refereed paper, and the TESS TOI team needs a period before it will consider a community candidate.</p>
+<pre>TIC ID            178994149
+Epoch (BJD_TDB)   2460998.9041 ± 0.0020
+Period            unknown (single transit; P &gt; 49.6 d)
+Depth             26500 ± 2000 ppm
+Duration          2.5 ± 0.3 h
+Rp/R*             0.156 (+0.010 / −0.008)  [non-grazing]
+Planet radius     8.2 (+0.5 / −0.4) R_Earth
+Impact parameter  0.81 (+0.39 / −0.41); grazing not excluded
+Data              TESS S98 2-min SPOC (camera 2, CCD 1)
+Notes             on-target per difference image; no BKG or centroid
+                  signal; host overluminous for colour (young or binary)</pre>
+</section>
+
+<footer>Data: TESS mission (NASA), MAST/STScI public archive, ExoFOP-TESS, NASA Exoplanet Archive, Gaia DR3 (ESA). Analysis: custom Python pipeline with astropy, wotan, batman and emcee. Report generated 24 November 2026.</footer>
+</div>
