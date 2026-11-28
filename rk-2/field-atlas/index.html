@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090d11">
+<title>Teegarden’s Star c · Field Atlas</title>
+<style>
+:root{color-scheme:dark;--ink:#f3f0e7;--dim:#b7b8b7;--gold:#edbb81;--line:#ffffff38}
+*{box-sizing:border-box}body{margin:0;background:#080c12;color:var(--ink);font-family:Inter,"Helvetica Neue",Arial,sans-serif}
+main{position:relative;isolation:isolate;overflow:hidden;min-height:720px;height:100svh;background:radial-gradient(ellipse at 62% 36%,#1d2229,#090d14 62%,#06090d)}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#world{z-index:1}#diagram{z-index:2}#surface{position:absolute;inset:0;z-index:3;cursor:grab;touch-action:none}
+#surface:active{cursor:grabbing}.ui{position:absolute;z-index:4}
+header{top:0;left:4.6%;right:4.6%;height:82px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;gap:12px;align-items:center;font-size:14px;font-weight:600;letter-spacing:.09em}
+.brand svg{color:var(--gold)}.tabs{display:flex;gap:3px;background:#0b1119da;border:1px solid #7e869044;border-radius:30px;padding:4px}
+button{font:inherit;color:inherit;cursor:pointer}.tabs button{border:0;background:none;padding:8px 15px;color:#b9bfca;font-size:12px;border-radius:20px}
+.tabs button[aria-pressed=true]{background:#e4dfcf;color:#171a1d}.tabs button:hover:not([aria-pressed=true]),.tools button:hover{background:#37404c}
+button:focus-visible,a:focus-visible,#surface:focus-visible{outline:2px solid #eec08b;outline-offset:3px}
+.intro{top:26%;left:5.2%;width:33%;pointer-events:none;text-shadow:0 2px 12px #05080b}
+.eyebrow,.label,.meta,.eyeline{font:10px/1.4 "IBM Plex Mono","Courier New",monospace;letter-spacing:.13em;text-transform:uppercase}
+.eyebrow{color:var(--gold);display:flex;align-items:center;gap:11px}.eyebrow:before{content:"";width:24px;height:1px;background:var(--gold)}
+h1{font:normal clamp(55px,6.7vw,116px)/.97 Georgia,"Times New Roman",serif;letter-spacing:-.071em;margin:22px 0 17px}
+.intro p{font-size:clamp(13px,1.06vw,17px);line-height:1.55;max-width:310px;color:#c0c4c7;margin:0}
+.tools{right:4.8%;bottom:27%;display:flex;align-items:center;gap:5px}
+.tools button{border:1px solid #747e8755;border-radius:50%;height:34px;width:34px;background:#111720e6;font-size:17px}
+.tools .drag{color:#d0d0ce;font-size:11px;margin-right:6px;text-shadow:0 1px 4px #000}
+.meta{left:5.2%;bottom:22%;color:#c8c9c5;letter-spacing:.065em}
+.strip{bottom:6.8%;left:5.2%;right:5.2%;border-top:1px solid var(--line);padding-top:17px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(185px,1.3fr);gap:16px;align-items:start}
+.label{color:#b9baba;display:block;letter-spacing:.09em}.value{font:normal clamp(20px,2.2vw,34px)/1.35 Georgia,serif;letter-spacing:-.035em;white-space:nowrap}
+.value small{font:12px Arial,sans-serif;color:#c7c5bf;letter-spacing:0}.caption{color:#bbbcbf;font:12px/1.45 Arial,sans-serif;max-width:290px;margin:0}
+footer{bottom:14px;left:5.2%;right:5.2%;display:flex;justify-content:space-between;gap:10px;color:#8e979e;font-size:10px}footer a{color:#c9c6bc}
+dialog{width:min(520px,91vw);border:1px solid #776d57;border-radius:10px;background:#131a21;color:#f3ede1;padding:28px;box-shadow:0 20px 100px #000}dialog::backdrop{background:#020508b8}
+dialog h2{font:32px Georgia,serif;margin:0 0 12px}dialog p{font-size:14px;line-height:1.5;color:#d0d0ca}dialog a{color:var(--gold)}dialog button{background:#353b40;border:1px solid #6d7378;border-radius:5px;padding:6px 13px}
+.link{background:none;border:0;padding:0;text-decoration:underline;text-underline-offset:3px;font:inherit;color:#cec9bb}
+@media(max-width:740px){main{min-height:770px}header{height:66px;left:5%;right:5%}.brand{font-size:11px;gap:5px}.brand svg{width:22px}.tabs button{font-size:11px;padding:7px 10px}.intro{top:13%;width:88%;left:6%}h1{font-size:clamp(39px,8.6vw,57px);margin:9px 0}.intro p{font-size:12px;max-width:300px}.intro h1 br{display:none}.eyebrow{font-size:9px}.tools{bottom:28%;right:6%}.tools .drag{font-size:10px}.meta{left:6%;bottom:23.5%;font-size:9px;max-width:89%}.strip{left:6%;right:6%;bottom:7%;gap:8px;grid-template-columns:repeat(3,minmax(0,1fr));padding-top:12px}.label{font-size:8px}.value{font-size:22px}.value small{font-size:10px}.caption{grid-column:1/-1;max-width:100%;font-size:11px;margin-top:3px}footer{left:6%;right:6%;font-size:9px;bottom:16px}}
+@media(max-width:740px){footer>span{max-width:29%}footer .link{font-size:9px}}
+@media(max-width:370px){.tabs button{padding:6px 7px}.value{font-size:18px}.brand{letter-spacing:.02em}}
+</style>
+<main>
+<canvas id="sky" aria-hidden="true"></canvas><canvas id="world" aria-hidden="true"></canvas><canvas id="diagram" aria-hidden="true"></canvas>
+<div id="surface" tabindex="0" role="region" aria-label="Interactive 3D view. Drag or use arrow keys to rotate. Use plus and minus to zoom, and Home to reset."></div>
+<header class="ui"><div class="brand"><svg width="29" height="29" viewBox="0 0 36 36" fill="none" aria-hidden="true"><circle cx="18" cy="18" r="10" stroke="currentColor"/><ellipse cx="18" cy="18" rx="17" ry="5" transform="rotate(-35 18 18)" stroke="currentColor"/><circle cx="30" cy="8" r="2" fill="currentColor"/></svg>FIELD ATLAS</div><nav class="tabs" aria-label="Scene view"><button data-view="world" aria-pressed="true">Planet</button><button data-view="orbits" aria-pressed="false">Orbits</button><button data-view="map" aria-pressed="false">Star map</button></nav></header>
+<section class="ui intro" aria-live="polite"><div class="eyebrow" id="kicker"></div><h1 id="heading"></h1><p id="summary"></p></section>
+<div class="ui tools"><span class="drag">Drag to rotate</span><button aria-label="Zoom out" id="minus">−</button><button aria-label="Zoom in" id="plus">+</button><button aria-label="Reset view" id="reset">↺</button></div>
+<div class="ui meta" id="note"></div><section class="ui strip" aria-label="View measurements"><div><span class="label" id="l0"></span><div class="value" id="v0"></div></div><div><span class="label" id="l1"></span><div class="value" id="v1"></div></div><div><span class="label" id="l2"></span><div class="value" id="v2"></div></div><p class="caption" id="caption"></p></section>
+<footer class="ui"><span><span id="mission"></span></span><button class="link" id="switchTarget"></button><button class="link" id="about">Evidence &amp; sources</button></footer>
+<dialog id="details"><h2>Evidence behind the scene</h2><p>The 11.405-day Doppler signal appears in 233 nights of CARMENES data. Its period matches Teegarden’s Star c, first reported in 2019. A 2024 study confirmed the planet with a minimum mass of 1.05 Earth masses. The true mass depends on orbital inclination.</p><p>The published orbit is 0.0455 AU and receives 0.35 times Earth’s irradiation. A suitable atmosphere could allow surface liquid water. The surface, atmosphere and orbital orientations shown here are artistic choices.</p><p>The star map uses equatorial coordinates and distances from the NASA Exoplanet Archive. The orbit view uses catalog semimajor axes for all three planets. Their displayed sizes and phases are illustrative.</p><p><a href="https://doi.org/10.1051/0004-6361/201935460">Discovery paper</a> · <a href="https://doi.org/10.1051/0004-6361/202348033">Multi-instrument follow-up</a> · <a href="https://exoplanetarchive.ipac.caltech.edu/overview/teegarden">NASA archive</a></p><button id="close">Close</button></dialog>
+</main>
+<script id="fragment" type="text/plain">
+precision highp float;
+uniform vec2 center,rot;
+uniform float radius,cloudWorld;
+float hash(vec3 p){p=fract(p*.3183099+vec3(.71,.113,.419));p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
+float noise(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
+const mat3 twist=mat3(.00,.80,.60,-.80,.36,-.48,-.60,-.48,.64);
+float fb(vec3 p){float s=0.,w=.53;for(int i=0;i<6;i++){s+=w*noise(p);p=twist*p*2.05+13.14;w*=.49;}return s;}
+vec3 turn(vec3 p){float c=cos(rot.y),s=sin(rot.y);p=vec3(p.x,c*p.y-s*p.z,s*p.y+c*p.z);c=cos(rot.x);s=sin(rot.x);return vec3(c*p.x+s*p.z,p.y,-s*p.x+c*p.z);}
+void main(){vec2 q=(gl_FragCoord.xy-center)/radius;float rr=dot(q,q);if(rr>1.055)discard;
+vec3 sun=normalize(vec3(-.86,.47,.09));float d=sqrt(rr);
+if(rr>=1.){float a=exp(-max(d-1.,0.)*220.)*pow(max(dot(normalize(q),sun.xy),0.),2.)*.54;gl_FragColor=vec4(1.,.75,.51,a);return;}
+vec3 n=vec3(q,sqrt(max(0.,1.-rr)));vec3 p=turn(n);
+vec3 warp=vec3(fb(p*2.8+8.),fb(p*3.2-15.),fb(p*2.9+2.));
+vec3 v=p*3.8+warp*2.1;float basin=fb(v),terrain=fb(v*3.6+4.5),grain=fb(v*21.+13.);
+float ridge=1.-abs(2.*fb(3.8*v+vec3(3.7*basin,1.3,1.7))-1.);
+float striation=sin((basin*16.+terrain*1.6+grain*.28)*8.);
+vec3 mineral=mix(vec3(.16,.17,.18),vec3(.50,.365,.26),smoothstep(.39,.63,basin));
+mineral=mix(mineral,vec3(.63,.59,.51),smoothstep(.47,.69,terrain)*.73);
+float frost=smoothstep(.53,.64,basin*.42+terrain*.27+abs(p.y)*.29+.10*ridge);
+mineral=mix(mineral,vec3(.68,.71,.72),frost);
+mineral*=.66+.73*grain+.14*striation;
+if(cloudWorld>.5){
+ float storms=fb(vec3(p.x*6.,p.y*11.,p.z*6.)+4.5*warp);
+ float flow=p.y*18.+4.7*warp.x+2.1*storms+.24*fb(p*33.);
+ float bands=.5+.5*sin(flow*2.7+.52*sin(flow*4.2));
+ vec3 lower=mix(vec3(.20,.31,.36),vec3(.48,.52,.49),smoothstep(.14,.87,bands));
+ vec3 upper=mix(vec3(.55,.40,.26),vec3(.86,.79,.67),smoothstep(.28,.65,storms));
+ mineral=mix(lower,upper,smoothstep(.31,.76,storms+.18*bands))* (.82+.26*grain);
+}
+float slopeX=dFdx(basin+.23*terrain+.13*grain)*radius;
+float slopeY=dFdy(basin+.23*terrain+.13*grain)*radius;
+float relief=clamp(-.25*slopeX+.12*slopeY,-.38,.38);
+float light=dot(n,sun);float lambert=smoothstep(-.10,.61,light);
+vec3 night=vec3(.028,.055,.084)*(.68+.69*terrain);
+vec3 color=night+mineral*vec3(1.18,1.02,.84)*pow(max(0.,light+.075),.63)*(.84+.34*relief);
+float rim=pow(1.-n.z,4.8);color+=rim*mix(vec3(.035,.095,.15),vec3(.92,.69,.43),smoothstep(-.18,.55,light))*(.38+.4*lambert);
+gl_FragColor=vec4(color,1.);}
+</script>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const teegarden = {
+ world: {label:"Planet portrait",title:"Teegarden’s <br>Star c",summary:"This confirmed planet circles a red dwarf 12.49 light-years from the Sun, within the star’s modeled habitable zone.",
+   note:"Artist’s impression · surface appearance unknown",stats:[["Recovered period","11.405","days"],["Published minimum mass","1.05","Earths"],["Starlight received","0.35","× Earth"]],
+   caption:"The Doppler measurements reveal an orbit. The mineral terrain and light along the limb are imagined."},
+ orbits: {label:"Planetary system",title:"Three close <br>orbits",summary:"All three known planets would fit well inside Mercury’s orbit. Planet c circles between its two neighbors.",
+   note:"Orbital radii to scale · body sizes and phases illustrative",stats:[["Orbit of b","0.0259","AU"],["Orbit of c","0.0455","AU"],["Orbit of d","0.0791","AU"]],
+   caption:"The shaded band spans the model’s conservative habitable zone. One astronomical unit (AU) is Earth’s mean distance from the Sun."},
+ map: {label:"Solar neighborhood",title:"The view <br>from home",summary:"From the Sun, Teegarden’s Star lies in the direction of Aries. Nearby hosts recovered in the same search give the distance context.",
+   note:"Heliocentric equatorial coordinates · grid spacing 5 light-years",stats:[["Distance","12.49","light-years"],["Right ascension","43.269","degrees"],["Declination","+16.865","degrees"]],
+   caption:"The amber line connects the Sun to Teegarden’s Star. Drag to tilt the equatorial plane and see which systems sit above or below it."}
+};
+const transit = {
+ world:{label:"Transit lead in Draco",title:"TIC <br>230091879",summary:"Toward this cool star, TESS recorded dips on a 133-day rhythm. A planet on this orbit would receive about a third of Earth’s starlight.",
+ note:"Hypothetical planet · artist’s impression",stats:[["Repeat interval","133.097","days"],["Transit depth","0.142","%"],["Distance from Sun","314","light-years"]],
+ caption:"Two more dips appear where the original fit had no data. Cloud decks illustrate one possible interpretation."},
+ orbits:{label:"Possible orbit",title:"Inside the <br>temperate zone",summary:"At the fitted separation, a planet would orbit inside this star’s model habitable zone. Its size and surface conditions are poorly constrained.",
+ note:"Circular orbit assumed · body size and orbital phase illustrative",stats:[["Orbital distance","0.421","AU"],["Starlight received","0.36","× Earth"],["Stellar temperature","3,845","K"]],
+ caption:"The shaded band uses a one-Earth-mass climate model. The outer reference circle shows the radius of Earth’s orbit."},
+ map:{label:"Line of sight",title:"Toward <br>Draco",summary:"The star lies roughly 314 light-years from the Sun, high above the celestial equator. The dashed line drops to its projection on that plane.",
+ note:"Heliocentric equatorial coordinates · grid spacing 50 light-years",stats:[["Distance","96.4","parsecs"],["Right ascension","247.859","degrees"],["Declination","+68.725","degrees"]],
+ caption:"The amber line follows the sightline from the Sun. Coordinates and distance come from the TESS Input Catalog."}
+};
+let lead=location.hash==="#transit";
+const transitEvidence=`<h2>A repeating transit-like signal</h2><p>NASA’s SPOC pipeline reported six events at 133.097 days in its sectors 14–86 search. We remeasured seven distinct dimmings. Two occurred where the original fit had no data. Their combined depth in QLP photometry was 0.122% with a characteristic noise of 0.035%.</p><p>At 0.421 AU, an object would receive about 0.36 times Earth’s irradiation. The fitted radius is 2.15 ± 1.66 Earth radii. The DV report finds a possible secondary dip and rates zero of five difference images as good quality. Our two extra pixel images also leave the source unresolved. An eclipsing stellar companion or blended source remains plausible.</p><p>The planet is hypothetical. Its atmosphere, appearance and displayed orbital orientation are illustrative. The orbit view uses a circular model and a climate band calculated for a one-Earth-mass planet.</p><p><a href="https://exofop.ipac.caltech.edu/tess/target.php?id=230091879">ExoFOP target</a> · <a href="https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019199201929-s0014-s0086-0000000230091879-01-00971_dvs.pdf">NASA validation report</a></p>`;
+const detailsBody=document.createElement("div");
+const details=$("details");
+while(details.firstChild!==$("close"))detailsBody.appendChild(details.firstChild);
+details.prepend(detailsBody);
+const originalEvidence=detailsBody.innerHTML;
+const TAU=Math.PI*2,sky=$("sky"),body=$("world"),diagram=$("diagram"),layer=$("surface");
+let previousSky="";
+const back=sky.getContext("2d"),ctx=diagram.getContext("2d");
+let view="world",yaw=.32,pitch=.36,zoom=1,width=0,height=0,dpr=1,cx=0,cy=0,r=0,frame=0;
+const gl=body.getContext("webgl",{alpha:true,premultipliedAlpha:false,antialias:false,preserveDrawingBuffer:true});
+let program,locations;
+function shader(type,source){
+ const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);
+ if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;
+}
+if(gl && gl.getExtension("OES_standard_derivatives")){
+ program=gl.createProgram();
+ gl.attachShader(program,shader(gl.VERTEX_SHADER,"attribute vec2 xy; void main(){gl_Position=vec4(xy,0.,1.);}"));
+ gl.attachShader(program,shader(gl.FRAGMENT_SHADER,"#extension GL_OES_standard_derivatives : enable\n"+$("fragment").textContent));
+ gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));
+ gl.useProgram(program);let buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+ gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+ const xy=gl.getAttribLocation(program,"xy");gl.enableVertexAttribArray(xy);gl.vertexAttribPointer(xy,2,gl.FLOAT,false,0,0);
+ locations=Object.fromEntries(["center","rot","radius","cloudWorld"].map(s=>[s,gl.getUniformLocation(program,s)]));
+}
+function rng(seed){return function(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};}
+function glow(c,x,y,r,stops){let g=c.createRadialGradient(x,y,0,x,y,r);stops.forEach(([v,col])=>g.addColorStop(v,col));c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();}
+function background(){
+ back.clearRect(0,0,width,height);const rand=rng(2817);let count=Math.ceil(width*height/520);
+ for(let i=0;i<140;i++){let u=rand(),v=rand()+rand()+rand()-1.5,x=u*width,y=(.70-.54*u+.14*v)*height;
+   glow(back,x,y,(.04+.08*rand())*width,[[0,"rgba(102,116,133,.027)"],[.65,"rgba(90,100,119,.012)"],[1,"rgba(0,0,0,0)"]]);}
+ for(let i=0;i<count;i++){let x=rand()*width,y=rand()*height,s=rand(),intensity=(.16+.66*rand())*(x<width*.34?.65:1);
+  back.fillStyle="rgba("+(s>.82?"255,210,175":s<.3?"178,203,228":"222,222,217")+","+intensity+")";
+  back.beginPath();back.arc(x,y,.32+.8*Math.pow(rand(),5),0,TAU);back.fill();
+  if(s>.997){glow(back,x,y,5,[[0,"#d5dee3aa"],[.14,"#a7c1d166"],[1,"#929fb100"]]);}}
+ if(view==="world"){
+  const x=cx-r*1.25,y=cy-r*.71;
+  glow(back,x,y,r*.78,[[0,"#ffdfada0"],[.035,"#f4bb8075"],[.13,"#b7775238"],[.5,"#ab695513"],[1,"#905d4300"]]);
+  glow(back,x,y,Math.max(4,r*.032),[[0,"#fff7dc"],[.48,"#fff0c2"],[.62,"#ffcd94"],[.73,"#ffb07680"],[1,"#f49c5000"]]);
+  for(let a of [-.14,Math.PI/2-.14]){back.save();back.translate(x,y);back.rotate(a);
+   let grad=back.createLinearGradient(-r*.22,0,r*.22,0);grad.addColorStop(0,"#eebd8400");grad.addColorStop(.5,"#ffdaa889");grad.addColorStop(1,"#eebd8400");back.fillStyle=grad;back.fillRect(-r*.22,-.5,r*.44,1);back.restore();}
+ }
+}
+function drawWorld(){
+ if(program){gl.viewport(0,0,body.width,body.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.uniform2f(locations.center,cx*dpr,(height-cy)*dpr);gl.uniform1f(locations.radius,r*dpr);gl.uniform1f(locations.cloudWorld,lead?1:0);gl.uniform2f(locations.rot,yaw,pitch);
+  gl.drawArrays(gl.TRIANGLES,0,6);
+ } else { // The planet remains navigable as a shaded sphere on older devices.
+  const bx=cx+Math.sin(yaw)*.18*r,by=cy+Math.sin(pitch)*.12*r;
+  let g=ctx.createRadialGradient(bx-r*.77,by-r*.41,0,bx,by,r*1.14);
+  g.addColorStop(0,"#d7b492");g.addColorStop(.42,"#877564");g.addColorStop(.68,"#383a3b");g.addColorStop(1,"#0a1723");
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,TAU);ctx.fill();}
+}
+// Equatorial x points toward RA 0, y toward RA 6h, z toward the north pole.
+function project(x,y,z,unit){
+ let c=Math.cos(yaw),s=Math.sin(yaw),u=x*c-y*s,v=x*s+y*c;
+ let depth=v*Math.cos(pitch)+z*Math.sin(pitch),up=z*Math.cos(pitch)-v*Math.sin(pitch);
+ const k=1/(1-depth*unit/(width*5));
+ return [cx+u*unit*k,cy-up*unit*k,depth];
+}
+function path3(points,unit,stroke,fill,widthPx=1){
+ ctx.beginPath();points.forEach((p,i)=>{const [x,y]=project(...p,unit);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);});
+ if(fill){ctx.closePath();ctx.fillStyle=fill;ctx.fill();}
+ if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=widthPx;ctx.stroke();}
+}
+function circle3(a){return Array.from({length:241},(_,i)=>[a*Math.cos(TAU*i/240),a*Math.sin(TAU*i/240),0]);}
+function dot(p,unit,rad,col){let [x,y]=project(...p,unit);glow(ctx,x,y,rad*3,[[0,col],[.24,col],[.36,col+"8a"],[1,col+"00"]]);}
+function label(p,unit,text,dx,dy,color){
+ let [x,y]=project(...p,unit);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+dx*.55,y+dy);ctx.lineTo(x+dx,y+dy);ctx.strokeStyle=color+"89";ctx.lineWidth=1;ctx.stroke();
+ ctx.font="12px Arial";ctx.fillStyle=color;ctx.textAlign=dx<0?"right":"left";ctx.shadowColor="#06090c";ctx.shadowBlur=4;ctx.fillText(text,x+dx+(dx<0?-4:4),y+dy+4);ctx.shadowBlur=0;
+}
+function orbitalView(){
+ const unit=r/(lead?.72:.072);
+ const lum=lead?.06366:10**(-3.14146),t=(lead?3845:3034)-5780;
+ const se=(v,a,b,c,d)=>v+t*(a+t*(b+t*(c+t*d)));
+ const inner=Math.sqrt(lum/se(1.107,1.332e-4,1.58e-8,-8.308e-12,-1.931e-15));
+ const outer=Math.sqrt(lum/se(.356,6.171e-5,1.698e-9,-3.198e-12,-5.575e-16));
+ path3([...circle3(outer),...circle3(inner).reverse()],unit,null,"#70bdb322");
+ path3(circle3(inner),unit,"#669c9255");path3(circle3(outer),unit,"#669c9255");
+ if(lead){ctx.setLineDash([4,6]);path3(circle3(1),unit,"#9aaab079");ctx.setLineDash([]);label([-.95,.312,0],unit,"1 AU",12,14,"#a9b2be");}
+ const planets=lead?[["?",.4212,.42,"#edb980"]]:[["b",.0259,2.6,"#bab4a7"],["c",.0455,.05,"#edb980"],["d",.0791,4.6,"#abbac7"]];
+ for(let [n,a,phase,col] of planets){path3(circle3(a),unit,(n==="c"||n==="?")?"#e9b982aa":"#9aaab066");}
+ dot([0,0,0],unit,11,"#f2b37e");
+ for(let [n,a,phase,col] of planets){const p=[a*Math.cos(phase),a*Math.sin(phase),0];dot(p,unit,(n==="c"||n==="?")?6:4,col);label(p,unit,n==="?"?"Possible planet":"Planet "+n,n==="b"?-20:19,n==="d"?18:-16,col);}
+}
+const systems=[["Teegarden’s Star",43.2691449,16.8649024,3.83078],["GJ 273",111.852091,5.225807,5.921535],["GJ 251",103.7002499,33.2664632,5.58057],["HN Lib",218.5684823,-12.5170062,6.24442],["Wolf 1069",306.5242477,58.5753044,9.58341]];
+function starMap(){
+ const scale=lead?10:1,unit=r/(25*scale);
+ for(let i=-25;i<=25;i+=5){path3([[i*scale,-25*scale,0],[i*scale,25*scale,0]],unit,"#b3c1ce23");path3([[-25*scale,i*scale,0],[25*scale,i*scale,0]],unit,"#b3c1ce23");}
+ dot([0,0,0],unit,5,"#ffe7b4");label([0,0,0],unit,"Sun",-16,16,"#ffe7b4");
+ (lead?[["TIC 230091879",247.859057,68.724720,96.3651]]:systems).forEach(([name,ra,dec,pc],i)=>{let a=ra*Math.PI/180,d=dec*Math.PI/180,dist=pc*3.26156;
+  let p=[dist*Math.cos(a)*Math.cos(d),dist*Math.sin(a)*Math.cos(d),dist*Math.sin(d)],base=[p[0],p[1],0];
+  ctx.setLineDash([3,4]);path3([p,base],unit,"#9aadb078");ctx.setLineDash([]);
+  if(i===0)path3([[0,0,0],p],unit,"#f3bc84bb",1.5);
+  let col=i===0?"#f2bb83":"#a4beca";dot(p,unit,i===0?5:3,col);
+  label(p,unit,name,i===1?-33:i===2?-30:15,i===2?-28:i===1?23:-10,col);});
+}
+function draw(){
+ frame=0;let m=width<=740;
+ cx=width*(m?.52:.679);cy=height*(m?.49:.463);
+ r=Math.min(width*(m?.344:.211),height*(m?.205:.299))*zoom;
+ if(view==="map") {r*=lead?.63:.92;cy+=height*(lead?.17:.045);}
+ const skyKey=[view,width,height,cx,cy,r,dpr].join("/");
+ if(skyKey!==previousSky){background();previousSky=skyKey;}
+ ctx.clearRect(0,0,width,height);body.style.display=view==="world"?"block":"none";
+ if(view==="world")drawWorld();else if(view==="orbits")orbitalView();else starMap();
+}
+function schedule(){if(!frame)frame=requestAnimationFrame(draw);}
+function reset(){yaw=view==="map"?-.73:view==="orbits"?-.29:.31;pitch=view==="world"?.18:.53;zoom=1;schedule();}
+function change(name){
+ view=name;const s=(lead?transit:teegarden)[name];$("kicker").textContent=s.label;$("heading").innerHTML=s.title;$("summary").textContent=s.summary;
+ $("note").textContent=s.note;$("caption").textContent=s.caption;s.stats.forEach(([k,v,u],i)=>{$("l"+i).textContent=k;$("v"+i).innerHTML=v+" <small>"+u+"</small>";});
+ document.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.view===name)));reset();
+}
+function resize(){previousSky="";width=sky.clientWidth;height=sky.clientHeight;dpr=Math.min(window.devicePixelRatio||1,1.7);
+ for(let c of [sky,body,diagram]){c.width=Math.round(width*dpr);c.height=Math.round(height*dpr);}back.setTransform(dpr,0,0,dpr,0,0);ctx.setTransform(dpr,0,0,dpr,0,0);schedule();}
+let drag=null;layer.addEventListener("pointerdown",e=>{drag=[e.clientX,e.clientY];layer.setPointerCapture(e.pointerId);});
+layer.addEventListener("pointermove",e=>{if(!drag)return;yaw+=(e.clientX-drag[0])*.007;pitch=Math.max(-1.42,Math.min(1.42,pitch+(e.clientY-drag[1])*.007));drag=[e.clientX,e.clientY];schedule();});
+layer.addEventListener("lostpointercapture",()=>drag=null);
+function magnify(f){zoom=Math.max(.62,Math.min(1.4,zoom*f));schedule();}
+layer.addEventListener("wheel",e=>{e.preventDefault();magnify(Math.exp(-e.deltaY*.0015));},{passive:false});
+layer.addEventListener("keydown",e=>{switch(e.key){case "ArrowLeft":yaw-=.10;break;case "ArrowRight":yaw+=.10;break;case "ArrowUp":pitch=Math.min(1.42,pitch+.10);break;case "ArrowDown":pitch=Math.max(-1.42,pitch-.10);break;case "+":case "=":magnify(1.1);break;case "-":magnify(1/1.1);break;case "Home":reset();break;default:return;}e.preventDefault();schedule();});
+document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>change(b.dataset.view));
+$("minus").onclick=()=>magnify(1/1.12);$("plus").onclick=()=>magnify(1.12);$("reset").onclick=reset;
+$("about").onclick=()=>$("details").showModal();$("close").onclick=()=>$("details").close();
+function setTarget(){
+ document.title=(lead?"TIC 230091879":"Teegarden’s Star c")+" · Field Atlas";
+ $("mission").textContent=lead?"TESS  /  TIC 230091879":"CARMENES DR1  /  J02530+168";
+ $("switchTarget").textContent=lead?"Explore Teegarden’s Star c →":"Explore TIC 230091879 →";
+ detailsBody.innerHTML=lead?transitEvidence:originalEvidence;change("world");
+}
+$("switchTarget").onclick=()=>{location.hash=lead?"teegarden":"transit";};
+window.addEventListener("hashchange",()=>{lead=location.hash==="#transit";setTarget();});
+window.addEventListener("resize",resize);resize();setTarget();
+</script>
+</html>
