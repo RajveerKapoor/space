@@ -22,6 +22,12 @@ The combined QLP depth is **1,223 ppm** with characteristic noise **347 ppm**, c
 - The pipeline difference-image position is consistent with the target, but **zero of five difference images passed its quality criterion**. Our two additional 11 × 11 pixel cutouts also fail to isolate a common source. In sector 60 even the strongest pixel has a contrast of only 1.8 times its local scatter. In sector 79 the largest contrast is away from the target. Three much fainter Gaia sources lie 42–44 arcseconds from the target. An eclipsing neighbor could contribute light to a TESS aperture. Gaia classifies the target’s variability as SOLAR_LIKE. [Two new difference images](results/lead-pixels.png) · [Gaia field](results/lead-gaia-field.csv) · [Gaia variability classification](https://vizier.cfa.harvard.edu/viz-bin/VizieR-5?-source=I/358/vclassre&Source=1649494288953515136)
 - The host search checked ExoFOP TOI and CTOI lists, the NASA confirmed-planet table, and the Villanova TESS eclipsing-binary catalog. Absence from a catalog cannot establish priority. The November 2026 positional checks returned zero TOI, CTOI or confirmed-planet hosts within two arcminutes. The initial signal and its ephemeris are public mission products. The contribution here is the extra-epoch photometry and its coverage audit. [MAST TCE tables](https://archive.stsci.edu/tess/bulk_downloads/bulk_downloads_tce.html) · [Villanova lookup](https://tessebs.villanova.edu/230091879)
 
+## Ground-based check of the source
+
+We retrieved public Zwicky Transient Facility (ZTF) light curves within 3.06 arcseconds of the Gaia position of the target and each of its three neighbors. Across 7,573 unflagged source detections after exposure deduplication, one distinct exposure covered the predicted 5.50-hour primary window. It recorded all four stars in the i band, 1.42 hours before the predicted center of cycle 8. We converted the observation times to BJD_TDB at Palomar and compared each star with its out-of-event median for the same ZTF object and filter. [Source photometry](data/ztf-field.csv.gz) · [IRSA light-curve service](https://irsa.ipac.caltech.edu/docs/program_interface/ztf_lightcurve_api.html)
+
+The three neighbors differed from baseline by +0.045, +0.026 and −0.029 magnitudes, all smaller than their respective measurement errors. The target was 0.019 magnitudes brighter than baseline, with a quoted error of 0.013 magnitudes. A 0.142% dip would change its brightness by only 0.0015 magnitudes. This exposure weighs against a deep i-band eclipse at that instant on the three resolved neighbors. Sparse coverage, different bandpasses and unresolved companions still limit the interpretation. [In-window observations and baseline scatter](results/lead-ztf-in-window.csv)
+
 ## Potential for life
 
 If the dips come from a planet transiting the target star, the pipeline fit implies **0.421 ± 0.009 AU**, **0.36 ± 0.06 times Earth’s irradiation** and a radius of **2.15 ± 1.66 Earth radii**. The last uncertainty is too large to distinguish rock from a thick gas envelope. At the catalog stellar temperature of 3,845 K and luminosity of 0.064 Suns, the one-Earth-mass conservative climate model spans roughly 0.26–0.50 AU. Surface water would depend on an atmosphere and a suitable surface. Neither has been measured. Spatially resolved photometry during a predicted dip would help identify which star dims. [NASA fit](https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019199201929-s0014-s0086-0000000230091879-01-00971_dvs.pdf) · [Host parameters](results/lead-star.json) · [Kopparapu et al.](https://doi.org/10.1088/2041-8205/787/2/L29)
@@ -32,7 +38,7 @@ The screen used 31 public single- and multi-sector TCE releases ending in sector
 
 For example, TIC 129781877 produced two measurable dips in the release that flagged it. Six usable predicted epochs outside that release averaged a brightening. The 133-day target retained dimmings across multiple sectors in both raw aperture flux and corrected flux. The calculations use a minimum local coverage threshold, a straight-line fit to the flanking data and the scatter of similarly sized windows elsewhere in the sector. The plotted half-hour bins are for display only.
 
-Install the repository’s analysis dependencies and run these commands from the repository root. The cache stores FITS downloads locally. The fixed shortlist can be used directly for photometry.
+Run the following commands from the `rk-2/` directory. The cache stores FITS downloads locally. The fixed shortlist can be used directly for photometry.
 
 ```sh
 python -m pip install -r requirements.txt
@@ -41,7 +47,8 @@ python tess-search/photometry.py --cache /tmp/tess-light-curves
 python tess-search/followup.py --cache /tmp/tess-light-curves
 python tess-search/secondary.py --cache /tmp/tess-light-curves
 python tess-search/field.py
+python tess-search/ztf.py
 python tess-search/pixels.py --cache /tmp/tess-light-curves
 ```
 
-This work uses public NASA TESS data from MAST, SPOC data validation products, MIT QLP and TESS-SPOC high-level science products, ExoFOP, the NASA Exoplanet Archive and ESA Gaia DR3 through CDS VizieR. The search, analysis and atlas were developed with OpenAI Codex.
+This work uses public NASA TESS data from MAST, SPOC data validation products, MIT QLP and TESS-SPOC high-level science products, ExoFOP, the NASA Exoplanet Archive and ESA Gaia DR3 through CDS VizieR. The resolved follow-up uses public Zwicky Transient Facility photometry served by the NASA/IPAC Infrared Science Archive. The search, analysis and atlas were developed with OpenAI Codex.

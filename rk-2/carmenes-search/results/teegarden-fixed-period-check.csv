@@ -1,0 +1,5 @@
+sample,period_source,n_instrument_nights,period_d,semiamplitude_ms,delta_chi2
+other_instruments,blind,103,11.4046969,1.19699963,14.1847649
+other_instruments,published,103,11.416,1.28912259,15.8538325
+other_plus_later_CARM,blind,111,11.4046969,1.2150609,15.1382151
+other_plus_later_CARM,published,111,11.416,1.30857011,16.8947583

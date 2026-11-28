@@ -10,7 +10,7 @@ A search of public CARMENES radial velocities found a signal at **11.4047 days**
 | Orbital radius | 0.0456 AU |
 | Incident starlight | 0.53 times Earth’s |
 
-The star is about 12.49 light-years away in Aries. This planet’s low minimum mass and irradiation place it among nearby targets where surface water is physically plausible for a suitable atmosphere. The one-Earth-mass model gives a conservative habitable zone of 0.034–0.068 AU for the adopted star. Radial velocities leave the planet’s true mass, radius, atmosphere and surface conditions unresolved. [Climate model](https://doi.org/10.1088/2041-8205/787/2/L29) · [Multi-instrument system analysis](https://doi.org/10.1051/0004-6361/202348033)
+The star is about 12.49 light-years away in Aries. This planet’s low minimum mass and irradiation place it among nearby targets where surface water is physically plausible for a suitable atmosphere. The one-Earth-mass model gives a conservative habitable zone of 0.034–0.068 AU with the screening inputs. With the published luminosity and temperature, the zone is 0.028–0.056 AU and the planet receives 0.35 ± 0.02 times Earth’s irradiation. The atlas uses the published solution. Radial velocities leave the planet’s true mass, radius, atmosphere and surface conditions unresolved. [Climate model](https://doi.org/10.1088/2041-8205/787/2/L29) · [Multi-instrument system analysis](https://doi.org/10.1051/0004-6361/202348033)
 
 ![Stellar velocities folded at the detected 11.405-day period, with other fitted signals and a linear trend removed](results/teegarden-phase.png)
 
@@ -30,14 +30,17 @@ No tested activity indicator for this star showed strong modulation at 11.405 da
 
 We carried the DR1 frequency and phase into published data from HPF, ESPRESSO and the red arm of MAROON-X. The check retained 103 instrument-nights, fitting offsets for each instrument or observing run and a nuisance sinusoid at b’s DR1 period. A free amplitude gave 0.51 times the DR1 prediction, with nominal p = 0.024 under the stated noise assumptions. Fixing the amplitude as well improved χ² by only 0.35. The external data offer modest support for the phase and weak leverage on the exact DR1 amplitude. The system’s published classification comes from the original and subsequent multi-instrument studies. [Test result](results/independent-test.csv) · [Follow-up data](https://doi.org/10.26093/cds/vizier.36840117)
 
+A second check allowed the phase to vary at the frozen blind period, fitted offsets per instrument or observing run, and included sinusoids for both known companion planets. The 103 other-instrument nights gave a 1.20 m/s semiamplitude. The recovered and published periods and the results including eight later CARMENES nights are tabulated separately. The published period was fitted using overlapping data. [Targeted tests](results/teegarden-fixed-period-check.csv)
+
 ## Reproduction
 
-From the repository root, the following commands use the bundled compressed tables. `fetch.py` and `fetch_followup.py` can refresh the discovery and post-search inputs respectively. Updated live catalogs can differ from the included snapshot.
+From the `rk-2/` directory, the following commands use the bundled compressed tables. `fetch.py` and `fetch_followup.py` can refresh the discovery and post-search inputs respectively. Updated live catalogs can differ from the included snapshot.
 
 ```sh
 python -m pip install -r requirements.txt
 python carmenes-search/survey.py
 python carmenes-search/validate.py
+python carmenes-search/verify_planet.py
 ```
 
 This analysis uses the CARMENES consortium’s observations from Calar Alto, the GAVO service, the NASA Exoplanet Archive and CDS VizieR. The scripts and atlas were developed with OpenAI Codex.

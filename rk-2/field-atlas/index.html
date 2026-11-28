@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#090d11">
-<title>TIC 230091879 · Field Atlas</title>
+<title>Teegarden’s Star c · Field Atlas</title>
 <style>
 :root{color-scheme:dark;--ink:#f3f0e7;--dim:#b7b8b7;--gold:#edbb81;--line:#ffffff38}
 *{box-sizing:border-box}body{margin:0;background:#080c12;color:var(--ink);font-family:Inter,"Helvetica Neue",Arial,sans-serif}
@@ -45,7 +45,7 @@ dialog h2{font:32px Georgia,serif;margin:0 0 12px}dialog p{font-size:14px;line-h
 <div class="ui tools"><span class="drag">Drag to rotate</span><button aria-label="Zoom out" id="minus">−</button><button aria-label="Zoom in" id="plus">+</button><button aria-label="Reset view" id="reset">↺</button></div>
 <div class="ui meta" id="note"></div><section class="ui strip" aria-label="View measurements"><div><span class="label" id="l0"></span><div class="value" id="v0"></div></div><div><span class="label" id="l1"></span><div class="value" id="v1"></div></div><div><span class="label" id="l2"></span><div class="value" id="v2"></div></div><p class="caption" id="caption"></p></section>
 <footer class="ui"><span><span id="mission"></span></span><button class="link" id="switchTarget"></button><button class="link" id="about">Evidence &amp; sources</button></footer>
-<dialog id="details"><h2>Evidence behind the scene</h2><p>The 11.405-day Doppler signal appears in 233 nights of CARMENES data. Its period matches Teegarden’s Star c, first reported in 2019. The estimated minimum mass is 1.09 Earth masses. The true mass depends on orbital inclination.</p><p>Our circular fit gives 0.0456 AU and 0.53 times Earth’s irradiation. A suitable atmosphere could allow surface liquid water. The surface, atmosphere and orbital orientations shown here are artistic choices.</p><p>The star map uses equatorial coordinates and distances from the NASA Exoplanet Archive. The orbit view uses catalog semimajor axes for all three planets. Their displayed sizes and phases are illustrative.</p><p><a href="https://doi.org/10.1051/0004-6361/201935460">Discovery paper</a> · <a href="https://doi.org/10.1051/0004-6361/202348033">Multi-instrument follow-up</a> · <a href="https://exoplanetarchive.ipac.caltech.edu/overview/teegarden">NASA archive</a></p><button id="close">Close</button></dialog>
+<dialog id="details"><h2>Evidence behind the scene</h2><p>The 11.405-day Doppler signal appears in 233 nights of CARMENES data. Its period matches Teegarden’s Star c, first reported in 2019. A 2024 study confirmed the planet with a minimum mass of 1.05 Earth masses. The true mass depends on orbital inclination.</p><p>The published orbit is 0.0455 AU and receives 0.35 times Earth’s irradiation. A suitable atmosphere could allow surface liquid water. The surface, atmosphere and orbital orientations shown here are artistic choices.</p><p>The star map uses equatorial coordinates and distances from the NASA Exoplanet Archive. The orbit view uses catalog semimajor axes for all three planets. Their displayed sizes and phases are illustrative.</p><p><a href="https://doi.org/10.1051/0004-6361/201935460">Discovery paper</a> · <a href="https://doi.org/10.1051/0004-6361/202348033">Multi-instrument follow-up</a> · <a href="https://exoplanetarchive.ipac.caltech.edu/overview/teegarden">NASA archive</a></p><button id="close">Close</button></dialog>
 </main>
 <script id="fragment" type="text/plain">
 precision highp float;
@@ -90,8 +90,8 @@ gl_FragColor=vec4(color,1.);}
 "use strict";
 const $ = id => document.getElementById(id);
 const teegarden = {
- world: {label:"Planet portrait",title:"Teegarden’s <br>Star c",summary:"A red dwarf only twelve and a half light-years away moves to the rhythm of this world.",
-   note:"Artist’s impression · surface appearance unknown",stats:[["Recovered period","11.405","days"],["Minimum mass","1.09","Earths"],["Starlight received","0.53","× Earth"]],
+ world: {label:"Planet portrait",title:"Teegarden’s <br>Star c",summary:"This confirmed planet circles a red dwarf 12.49 light-years from the Sun, within the star’s modeled habitable zone.",
+   note:"Artist’s impression · surface appearance unknown",stats:[["Recovered period","11.405","days"],["Published minimum mass","1.05","Earths"],["Starlight received","0.35","× Earth"]],
    caption:"The Doppler measurements reveal an orbit. The mineral terrain and light along the limb are imagined."},
  orbits: {label:"Planetary system",title:"Three close <br>orbits",summary:"All three known planets would fit well inside Mercury’s orbit. Planet c circles between its two neighbors.",
    note:"Orbital radii to scale · body sizes and phases illustrative",stats:[["Orbit of b","0.0259","AU"],["Orbit of c","0.0455","AU"],["Orbit of d","0.0791","AU"]],
@@ -111,7 +111,7 @@ const transit = {
  note:"Heliocentric equatorial coordinates · grid spacing 50 light-years",stats:[["Distance","96.4","parsecs"],["Right ascension","247.859","degrees"],["Declination","+68.725","degrees"]],
  caption:"The amber line follows the sightline from the Sun. Coordinates and distance come from the TESS Input Catalog."}
 };
-let lead=location.hash!=="#teegarden";
+let lead=location.hash==="#transit";
 const transitEvidence=`<h2>A repeating transit-like signal</h2><p>NASA’s SPOC pipeline reported six events at 133.097 days in its sectors 14–86 search. We remeasured seven distinct dimmings. Two occurred where the original fit had no data. Their combined depth in QLP photometry was 0.122% with a characteristic noise of 0.035%.</p><p>At 0.421 AU, an object would receive about 0.36 times Earth’s irradiation. The fitted radius is 2.15 ± 1.66 Earth radii. The DV report finds a possible secondary dip and rates zero of five difference images as good quality. Our two extra pixel images also leave the source unresolved. An eclipsing stellar companion or blended source remains plausible.</p><p>The planet is hypothetical. Its atmosphere, appearance and displayed orbital orientation are illustrative. The orbit view uses a circular model and a climate band calculated for a one-Earth-mass planet.</p><p><a href="https://exofop.ipac.caltech.edu/tess/target.php?id=230091879">ExoFOP target</a> · <a href="https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019199201929-s0014-s0086-0000000230091879-01-00971_dvs.pdf">NASA validation report</a></p>`;
 const detailsBody=document.createElement("div");
 const details=$("details");
@@ -186,7 +186,7 @@ function label(p,unit,text,dx,dy,color){
 }
 function orbitalView(){
  const unit=r/(lead?.72:.072);
- const lum=lead?.06366:.120**2*(3030/5772)**4,t=(lead?3845:3030)-5780;
+ const lum=lead?.06366:10**(-3.14146),t=(lead?3845:3034)-5780;
  const se=(v,a,b,c,d)=>v+t*(a+t*(b+t*(c+t*d)));
  const inner=Math.sqrt(lum/se(1.107,1.332e-4,1.58e-8,-8.308e-12,-1.931e-15));
  const outer=Math.sqrt(lum/se(.356,6.171e-5,1.698e-9,-3.198e-12,-5.575e-16));
@@ -245,7 +245,7 @@ function setTarget(){
  detailsBody.innerHTML=lead?transitEvidence:originalEvidence;change("world");
 }
 $("switchTarget").onclick=()=>{location.hash=lead?"teegarden":"transit";};
-window.addEventListener("hashchange",()=>{lead=location.hash!=="#teegarden";setTarget();});
+window.addEventListener("hashchange",()=>{lead=location.hash==="#transit";setTarget();});
 window.addEventListener("resize",resize);resize();setTarget();
 </script>
 </html>
